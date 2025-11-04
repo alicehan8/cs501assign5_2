@@ -47,8 +47,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.assign5_2.ui.theme.Assign5_2Theme
-//import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-
 
 
 data class CheckableItem(var label: String, var isChecked: Boolean = false)
