@@ -5,6 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -43,6 +47,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.assign5_2.ui.theme.Assign5_2Theme
+//import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+
 
 
 data class CheckableItem(var label: String, var isChecked: Boolean = false)
@@ -66,6 +72,7 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     data object Tasks : Screen("tasks", "Tasks", Icons.Default.Check)
     data object Calendar : Screen("calendar", "Calendar", Icons.Default.DateRange)
 }
+
 
 // A list of all our screens to easily iterate over for the navigation bar.
 val screens = listOf(
@@ -149,9 +156,10 @@ fun MainScreen(viewModel: MyViewModel){
             modifier = Modifier.padding(innerPadding) // Apply padding from the Scaffold.
         ) {
             // Define a composable for each screen in our navigation graph.
-            composable(Screen.Notes.route) { NotesPage(viewModel)}
-            composable(Screen.Tasks.route) { TaskPage(viewModel) }
-            composable(Screen.Calendar.route) { Text("Calendar") }
+            composable(Screen.Notes.route, enterTransition ={ slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right) }, exitTransition = { fadeOut()}) { NotesPage(viewModel)}
+            composable(Screen.Tasks.route, enterTransition ={ fadeIn() }, exitTransition = { fadeOut()}) { TaskPage(viewModel) }
+            composable(Screen.Calendar.route, enterTransition ={ fadeIn() }, exitTransition = { fadeOut()}) { Text("Calendar") }
         }
     }
 }
